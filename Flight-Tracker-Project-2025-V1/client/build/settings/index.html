@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Settings - Flight Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h1, h2, h3 {
+            margin: 0;
+        }
+        .card {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], 
+        input[type="tel"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-group input {
+            margin-right: 10px;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .button-test {
+            background-color: #27ae60;
+        }
+        .button-test:hover {
+            background-color: #219955;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+        }
+        .nav-links {
+            margin-top: 10px;
+        }
+        .nav-links a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+        .result-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .history-container {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            background-color: #f8f9fa;
+        }
+        .tab.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .note {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 5px solid #ffeeba;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #bee5eb;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Flight Tracker</h1>
+        <div class="nav-links">
+            <a href="/flight-tracker/">Dashboard</a>
+            <a href="/flight-tracker/upload/">Upload</a>
+            <a href="/flight-tracker/reports/">Reports</a>
+            <a href="/flight-tracker/settings/">Settings</a>
+        </div>
+    </header>
+    <div class="app-container">
+        <div class="card">
+            <h2>Notification Settings</h2>
+            <p>Configure how flight status notifications are sent.</p>
+            
+            <div class="note">
+                <strong>Note:</strong> SMS notifications via Twilio and Azure require a verification process that can take several days or weeks to complete. For immediate notification needs, we recommend using email notifications or the logging option.
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="settings">Settings</div>
+                <div class="tab" data-tab="history">Notification History</div>
+            </div>
+            
+            <div class="tab-content active" id="settings-tab">
+                <form id="notification-config-form">
+                    <div class="form-group">
+                        <h3>Email Notifications</h3>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="email-enabled" name="emailEnabled">
+                            <label for="email-enabled">Enable Email Notifications</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notification-email">Gmail Address:</label>
+                            <input type="email" id="notification-email" name="notificationEmail" placeholder="your.email@gmail.com" value="ghiona@gmail.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email-password">Gmail App Password:</label>
+                            <input type="password" id="email-password" name="emailPassword" placeholder="Your Gmail App Password">
+                            <div class="info">
+                                <strong>Important:</strong> This must be an App Password, not your regular Gmail password. To create an App Password:
+                                <ol>
+                                    <li>Go to your Google Account → Security</li>
+                                    <li>Under "Signing in to Google," select "App passwords" (you may need to enable 2-step verification first)</li>
+                                    <li>Select "Mail" and "Other (Custom name)"</li>
+                                    <li>Enter "Flight Tracker" and click "Generate"</li>
+                                    <li>Copy the 16-character password and paste it here</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h3>SMS Notifications (Coming Soon)</h3>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="sms-enabled" name="smsEnabled" disabled>
+                            <label for="sms-enabled">Enable SMS Notifications</label>
+                            <small> - Currently undergoing verification</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notification-phone">Notification Phone Number:</label>
+                            <input type="tel" id="notification-phone" name="notificationPhone" placeholder="+1234567890" disabled>
+                            <small>Feature will be available once number verification is complete</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h3>System Logging</h3>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="log-notifications" name="logNotifications">
+                            <label for="log-notifications">Log Notifications to Server</label>
+                        </div>
+                        <small>This option is useful for development and testing</small>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="button">Save Settings</button>
+                        <button type="button" id="test-notification-button" class="button button-test">Send Test Notification</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="tab-content" id="history-tab">
+                <h3>Notification History</h3>
+                <div class="history-container">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Recipient</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Method</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <tr>
+                                <td colspan="5">Loading notification history...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="result-message" class="result-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Flight Tracker Application &copy; 2025</p>
+    </footer>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and tab contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding tab content
+                const tabName = tab.getAttribute('data-tab');
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+                
+                // Load history if that tab is selected
+                if (tabName === 'history') {
+                    loadNotificationHistory();
+                }
+            });
+        });
+        
+        // Load notification configuration
+        async function loadNotificationConfig() {
+            try {
+                const response = await fetch('/flight-api/notifications/config');
+                if (!response.ok) {
+                    throw new Error('Failed to load notification configuration');
+                }
+                
+                const config = await response.json();
+                
+                // Populate form fields
+                document.getElementById('email-enabled').checked = config.emailEnabled;
+                document.getElementById('notification-email').value = config.notificationEmail || '';
+                document.getElementById('email-password').value = config.emailPassword || '';
+                document.getElementById('sms-enabled').checked = config.smsEnabled;
+                document.getElementById('notification-phone').value = config.notificationPhone || '';
+                document.getElementById('log-notifications').checked = config.logNotifications;
+                
+                return config;
+            } catch (error) {
+                console.error('Error loading notification config:', error);
+                showResult(false, 'Error loading notification configuration');
+                return null;
+            }
+        }
+        
+        // Save notification configuration
+        async function saveNotificationConfig(config) {
+            try {
+                const response = await fetch('/flight-api/notifications/config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(config)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to save notification configuration');
+                }
+                
+                const result = await response.json();
+                showResult(true, 'Notification configuration saved successfully');
+                return result;
+            } catch (error) {
+                console.error('Error saving notification config:', error);
+                showResult(false, 'Error saving notification configuration');
+                return null;
+            }
+        }
+        
+        // Send test notification
+        async function sendTestNotification() {
+            try {
+                const response = await fetch('/flight-api/notifications/test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'This is a test notification from the Flight Tracker application.'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to send test notification');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showResult(true, `Test notification sent successfully via ${result.result.method}!`);
+                } else {
+                    showResult(false, `Failed to send test notification: ${result.message}`);
+                }
+                
+                // Refresh notification history if we're on that tab
+                if (document.querySelector('.tab[data-tab="history"]').classList.contains('active')) {
+                    loadNotificationHistory();
+                }
+                
+                return result;
+            } catch (error) {
+                console.error('Error sending test notification:', error);
+                showResult(false, `Error sending test notification: ${error.message}`);
+                return null;
+            }
+        }
+        
+        // Load notification history
+        async function loadNotificationHistory() {
+            try {
+                const response = await fetch('/flight-api/notifications/history');
+                if (!response.ok) {
+                    throw new Error('Failed to load notification history');
+                }
+                
+                const history = await response.json();
+                const historyBody = document.getElementById('history-body');
+                
+                // Clear existing rows
+                historyBody.innerHTML = '';
+                
+                if (history.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="5">No notifications found in history</td>';
+                    historyBody.appendChild(row);
+                } else {
+                    // Add history rows in reverse order (newest first)
+                    history.slice().reverse().forEach(notification => {
+                        const row = document.createElement('tr');
+                        
+                        // Format date
+                        const date = new Date(notification.timestamp);
+                        const formattedDate = date.toLocaleString();
+                        
+                        row.innerHTML = `
+                            <td>${formattedDate}</td>
+                            <td>${notification.recipient || 'System'}</td>
+                            <td>${notification.subject || '-'}</td>
+                            <td>${notification.message}</td>
+                            <td>${notification.method}</td>
+                        `;
+                        
+                        historyBody.appendChild(row);
+                    });
+                }
+                
+                return history;
+            } catch (error) {
+                console.error('Error loading notification history:', error);
+                const historyBody = document.getElementById('history-body');
+                historyBody.innerHTML = '<tr><td colspan="5">Error loading notification history</td></tr>';
+                return [];
+            }
+        }
+        
+        // Show result message
+        function showResult(success, message) {
+            const resultElement = document.getElementById('result-message');
+            resultElement.textContent = message;
+            resultElement.className = success ? 'result-message success' : 'result-message error';
+            resultElement.style.display = 'block';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                resultElement.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Form submit handler
+        document.getElementById('notification-config-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const config = {
+                emailEnabled: formData.get('emailEnabled') === 'on',
+                notificationEmail: formData.get('notificationEmail'),
+                emailPassword: formData.get('emailPassword'),
+                logNotifications: formData.get('logNotifications') === 'on'
+            };
+            
+            await saveNotificationConfig(config);
+        });
+        
+        // Test notification button handler
+        document.getElementById('test-notification-button').addEventListener('click', async () => {
+            await sendTestNotification();
+        });
+        
+        // Load config on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadNotificationConfig();
+        });
+    </script>
+</body>
+</html>

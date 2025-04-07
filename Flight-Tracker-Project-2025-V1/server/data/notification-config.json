@@ -1,0 +1,108 @@
+{
+  "smsEnabled": false,
+  "emailEnabled": true,
+  "notificationPhone": "",
+  "notificationEmail": "ghiona@gmail.com",
+  "logNotifications": true,
+  "sentMessages": [
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight AA123 Delayed",
+      "message": "FAILED: Flight AA123 from JFK to LAX on 2025-05-10 is delayed by 92 minutes. New departure time: 10:02. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor d75a77b69052e-4791b0883f1sm49943631cf.42 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:10:03.279Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight B6234 Cancelled",
+      "message": "FAILED: Flight B6234 from BOS to MCO on 2025-05-12 has been CANCELLED. It was originally scheduled for 07:00. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor af79cd13be357-7c76e759a66sm481054985a.25 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:10:03.584Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight WN567 Cancelled",
+      "message": "FAILED: Flight WN567 from MDW to PHX on 2025-05-12 has been CANCELLED. It was originally scheduled for 16:30. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor 6a1803df08f44-6ef0f00ec2esm46943006d6.47 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:10:03.909Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight AA456 Cancelled",
+      "message": "FAILED: Flight AA456 from MIA to JFK on 2025-05-13 has been CANCELLED. It was originally scheduled for 09:15. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor af79cd13be357-7c76ea5992csm481332785a.84 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:10:04.219Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight DL789 Delayed",
+      "message": "FAILED: Flight DL789 from LAX to ATL on 2025-05-13 is delayed by 100 minutes. New departure time: 12:40. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor d75a77b69052e-4792f96ed89sm27174361cf.59 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:10:04.505Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight UA123 Cancelled",
+      "message": "FAILED: Flight UA123 from ORD to DEN on 2025-05-14 has been CANCELLED. It was originally scheduled for 08:00. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor 6a1803df08f44-6ef0f048495sm47109106d6.65 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:10:04.808Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight B6789 Cancelled",
+      "message": "FAILED: Flight B6789 from FLL to JFK on 2025-05-14 has been CANCELLED. It was originally scheduled for 14:30. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor 6a1803df08f44-6ef0f14cfaasm47092146d6.104 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:10:05.084Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight WN234 Delayed",
+      "message": "FAILED: Flight WN234 from DEN to LAS on 2025-05-15 is delayed by 110 minutes. New departure time: 12:35. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor 6a1803df08f44-6ef0f13791esm46806926d6.77 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:10:05.426Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight AA123 Cancelled",
+      "message": "FAILED: Flight AA123 from JFK to LAX on 2025-05-10 has been CANCELLED. It was originally scheduled for 08:30. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor 6a1803df08f44-6ef0efc129dsm47368376d6.12 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:12:56.104Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight B6234 Delayed",
+      "message": "FAILED: Flight B6234 from BOS to MCO on 2025-05-12 is delayed by 32 minutes. New departure time: 07:32. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor 6a1803df08f44-6ef0f010bfasm47238066d6.49 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:12:56.378Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight DL789 Cancelled",
+      "message": "FAILED: Flight DL789 from LAX to ATL on 2025-05-13 has been CANCELLED. It was originally scheduled for 11:00. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor af79cd13be357-7c76e96e611sm478080885a.62 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:12:56.678Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight UA123 Cancelled",
+      "message": "FAILED: Flight UA123 from ORD to DEN on 2025-05-14 has been CANCELLED. It was originally scheduled for 08:00. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor d75a77b69052e-4791b0713f6sm48678551cf.21 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:12:56.976Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight B6789 Cancelled",
+      "message": "FAILED: Flight B6789 from FLL to JFK on 2025-05-14 has been CANCELLED. It was originally scheduled for 14:30. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor 6a1803df08f44-6ef0f010c7esm47105936d6.44 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:12:57.274Z"
+    },
+    {
+      "recipient": "ghiona@gmail.com",
+      "subject": "Flight WN234 Delayed",
+      "message": "FAILED: Flight WN234 from DEN to LAS on 2025-05-15 is delayed by 111 minutes. New departure time: 12:36. (Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to\n534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor 6a1803df08f44-6ef0f1652a3sm47013486d6.119 - gsmtp)",
+      "method": "email-failed",
+      "timestamp": "2025-04-06T15:12:57.561Z"
+    }
+  ],
+  "emailPassword": "wzeg grpt cfei lrrf"
+}

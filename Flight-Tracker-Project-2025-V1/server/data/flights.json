@@ -1,0 +1,431 @@
+{
+  "flights": {
+    "AA123-2025-05-10": {
+      "flightNumber": "AA123",
+      "airline": "American Airlines",
+      "departureAirport": "JFK",
+      "arrivalAirport": "LAX",
+      "departureDate": "2025-05-10",
+      "departureTime": "08:30",
+      "arrivalDate": "2025-05-10",
+      "arrivalTime": "11:45",
+      "status": "Cancelled",
+      "delayMinutes": 0,
+      "passengers": [
+        {
+          "name": "John Smith",
+          "email": "john.smith@example.com",
+          "phone": "+18005551234",
+          "travelReason": "business",
+          "category": "Business",
+          "vipStatus": false,
+          "frequentFlyer": true
+        },
+        {
+          "name": "Jane Doe",
+          "email": "jane.doe@example.com",
+          "phone": "+18005555678",
+          "travelReason": "business",
+          "category": "VIP",
+          "vipStatus": true,
+          "frequentFlyer": true
+        }
+      ]
+    },
+    "DL456-2025-05-10": {
+      "flightNumber": "DL456",
+      "airline": "Delta Airlines",
+      "departureAirport": "ATL",
+      "arrivalAirport": "ORD",
+      "departureDate": "2025-05-10",
+      "departureTime": "10:15",
+      "arrivalDate": "2025-05-10",
+      "arrivalTime": "11:30",
+      "status": "In Air",
+      "delayMinutes": 0,
+      "passengers": [
+        {
+          "name": "Bob Johnson",
+          "email": "bob.johnson@example.com",
+          "phone": "+18005552345",
+          "travelReason": "leisure",
+          "category": "Leisure",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "name": "Alice Williams",
+          "email": "alice.williams@example.com",
+          "phone": "+18005553456",
+          "travelReason": "leisure",
+          "category": "Leisure",
+          "vipStatus": false,
+          "frequentFlyer": false
+        }
+      ]
+    },
+    "UA789-2025-05-11": {
+      "flightNumber": "UA789",
+      "airline": "United Airlines",
+      "departureAirport": "SFO",
+      "arrivalAirport": "SEA",
+      "departureDate": "2025-05-11",
+      "departureTime": "14:45",
+      "arrivalDate": "2025-05-11",
+      "arrivalTime": "16:30",
+      "status": "Scheduled",
+      "delayMinutes": 0,
+      "passengers": [
+        {
+          "name": "Michael Brown",
+          "email": "michael.brown@example.com",
+          "phone": "+18005554567",
+          "travelReason": "business",
+          "category": "Business",
+          "vipStatus": false,
+          "frequentFlyer": true
+        },
+        {
+          "name": "Emily Davis",
+          "email": "emily.davis@example.com",
+          "phone": "+18005556789",
+          "travelReason": "business",
+          "category": "VIP",
+          "vipStatus": true,
+          "frequentFlyer": true
+        }
+      ]
+    },
+    "B6234-2025-05-12": {
+      "flightNumber": "B6234",
+      "airline": "JetBlue",
+      "departureAirport": "BOS",
+      "arrivalAirport": "MCO",
+      "departureDate": "2025-05-12",
+      "departureTime": "07:00",
+      "arrivalDate": "2025-05-12",
+      "arrivalTime": "10:15",
+      "status": "Delayed",
+      "delayMinutes": 32,
+      "passengers": [
+        {
+          "name": "David Wilson",
+          "email": "david.wilson@example.com",
+          "phone": "+18005557890",
+          "travelReason": "leisure",
+          "category": "Leisure",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "name": "Sarah Miller",
+          "email": "sarah.miller@example.com",
+          "phone": "+18005558901",
+          "travelReason": "leisure",
+          "category": "Leisure",
+          "vipStatus": false,
+          "frequentFlyer": false
+        }
+      ]
+    },
+    "WN567-2025-05-12": {
+      "flightNumber": "WN567",
+      "airline": "Southwest",
+      "departureAirport": "MDW",
+      "arrivalAirport": "PHX",
+      "departureDate": "2025-05-12",
+      "departureTime": "16:30",
+      "arrivalDate": "2025-05-12",
+      "arrivalTime": "19:00",
+      "status": "Landed",
+      "delayMinutes": 0,
+      "passengers": [
+        {
+          "name": "James Anderson",
+          "email": "james.anderson@example.com",
+          "phone": "+18005559012",
+          "travelReason": "business",
+          "category": "Business",
+          "vipStatus": false,
+          "frequentFlyer": true
+        },
+        {
+          "name": "Jennifer Thomas",
+          "email": "jennifer.thomas@example.com",
+          "phone": "+18005550123",
+          "travelReason": "leisure",
+          "category": "Leisure",
+          "vipStatus": false,
+          "frequentFlyer": false
+        }
+      ]
+    },
+    "AA456-2025-05-13": {
+      "flightNumber": "AA456",
+      "airline": "American Airlines",
+      "departureAirport": "MIA",
+      "arrivalAirport": "JFK",
+      "departureDate": "2025-05-13",
+      "departureTime": "09:15",
+      "arrivalDate": "2025-05-13",
+      "arrivalTime": "12:30",
+      "status": "Landed",
+      "delayMinutes": 0,
+      "passengers": [
+        {
+          "name": "Robert Garcia",
+          "email": "robert.garcia@example.com",
+          "phone": "+18005551111",
+          "travelReason": "business",
+          "category": "VIP",
+          "vipStatus": true,
+          "frequentFlyer": true
+        },
+        {
+          "name": "Lisa Martinez",
+          "email": "lisa.martinez@example.com",
+          "phone": "+18005552222",
+          "travelReason": "business",
+          "category": "Business",
+          "vipStatus": false,
+          "frequentFlyer": true
+        }
+      ]
+    },
+    "DL789-2025-05-13": {
+      "flightNumber": "DL789",
+      "airline": "Delta Airlines",
+      "departureAirport": "LAX",
+      "arrivalAirport": "ATL",
+      "departureDate": "2025-05-13",
+      "departureTime": "11:00",
+      "arrivalDate": "2025-05-13",
+      "arrivalTime": "18:45",
+      "status": "Cancelled",
+      "delayMinutes": 0,
+      "passengers": [
+        {
+          "name": "William Clark",
+          "email": "william.clark@example.com",
+          "phone": "+18005553333",
+          "travelReason": "business",
+          "category": "Business",
+          "vipStatus": false,
+          "frequentFlyer": true
+        },
+        {
+          "name": "Susan Rodriguez",
+          "email": "susan.rodriguez@example.com",
+          "phone": "+18005554444",
+          "travelReason": "business",
+          "category": "Business",
+          "vipStatus": false,
+          "frequentFlyer": false
+        }
+      ]
+    },
+    "UA123-2025-05-14": {
+      "flightNumber": "UA123",
+      "airline": "United Airlines",
+      "departureAirport": "ORD",
+      "arrivalAirport": "DEN",
+      "departureDate": "2025-05-14",
+      "departureTime": "08:00",
+      "arrivalDate": "2025-05-14",
+      "arrivalTime": "09:45",
+      "status": "Cancelled",
+      "delayMinutes": 0,
+      "passengers": [
+        {
+          "name": "Thomas Lewis",
+          "email": "thomas.lewis@example.com",
+          "phone": "+18005555555",
+          "travelReason": "leisure",
+          "category": "Leisure",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "name": "Nancy Lee",
+          "email": "nancy.lee@example.com",
+          "phone": "+18005556666",
+          "travelReason": "leisure",
+          "category": "Leisure",
+          "vipStatus": false,
+          "frequentFlyer": false
+        }
+      ]
+    },
+    "B6789-2025-05-14": {
+      "flightNumber": "B6789",
+      "airline": "JetBlue",
+      "departureAirport": "FLL",
+      "arrivalAirport": "JFK",
+      "departureDate": "2025-05-14",
+      "departureTime": "14:30",
+      "arrivalDate": "2025-05-14",
+      "arrivalTime": "17:15",
+      "status": "Cancelled",
+      "delayMinutes": 0,
+      "passengers": [
+        {
+          "name": "Daniel Walker",
+          "email": "daniel.walker@example.com",
+          "phone": "+18005557777",
+          "travelReason": "business",
+          "category": "Business",
+          "vipStatus": false,
+          "frequentFlyer": true
+        },
+        {
+          "name": "Karen Hall",
+          "email": "karen.hall@example.com",
+          "phone": "+18005558888",
+          "travelReason": "business",
+          "category": "VIP",
+          "vipStatus": true,
+          "frequentFlyer": true
+        }
+      ]
+    },
+    "WN234-2025-05-15": {
+      "flightNumber": "WN234",
+      "airline": "Southwest",
+      "departureAirport": "DEN",
+      "arrivalAirport": "LAS",
+      "departureDate": "2025-05-15",
+      "departureTime": "10:45",
+      "arrivalDate": "2025-05-15",
+      "arrivalTime": "11:55",
+      "status": "Delayed",
+      "delayMinutes": 111,
+      "passengers": [
+        {
+          "name": "Matthew Allen",
+          "email": "matthew.allen@example.com",
+          "phone": "+18005559999",
+          "travelReason": "leisure",
+          "category": "Leisure",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "name": "Betty Young",
+          "email": "betty.young@example.com",
+          "phone": "+18005550000",
+          "travelReason": "leisure",
+          "category": "Leisure",
+          "vipStatus": false,
+          "frequentFlyer": false
+        }
+      ]
+    },
+    "undefined-undefined": {
+      "airline": "British Airways",
+      "status": "In Air",
+      "delayMinutes": 0,
+      "passengers": [
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        },
+        {
+          "category": "Regular",
+          "vipStatus": false,
+          "frequentFlyer": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,21 @@
+passengerName,email,phone,flightNumber,airline,departureAirport,arrivalAirport,departureDate,departureTime,arrivalDate,arrivalTime,travelReason,vipStatus,frequentFlyer
+John Smith,john.smith@example.com,+18005551234,AA123,American Airlines,JFK,LAX,2025-05-10,08:30,2025-05-10,11:45,business,false,true
+Jane Doe,jane.doe@example.com,+18005555678,AA123,American Airlines,JFK,LAX,2025-05-10,08:30,2025-05-10,11:45,business,true,true
+Bob Johnson,bob.johnson@example.com,+18005552345,DL456,Delta Airlines,ATL,ORD,2025-05-10,10:15,2025-05-10,11:30,leisure,false,false
+Alice Williams,alice.williams@example.com,+18005553456,DL456,Delta Airlines,ATL,ORD,2025-05-10,10:15,2025-05-10,11:30,leisure,false,false
+Michael Brown,michael.brown@example.com,+18005554567,UA789,United Airlines,SFO,SEA,2025-05-11,14:45,2025-05-11,16:30,business,false,true
+Emily Davis,emily.davis@example.com,+18005556789,UA789,United Airlines,SFO,SEA,2025-05-11,14:45,2025-05-11,16:30,business,true,true
+David Wilson,david.wilson@example.com,+18005557890,B6234,JetBlue,BOS,MCO,2025-05-12,07:00,2025-05-12,10:15,leisure,false,false
+Sarah Miller,sarah.miller@example.com,+18005558901,B6234,JetBlue,BOS,MCO,2025-05-12,07:00,2025-05-12,10:15,leisure,false,false
+James Anderson,james.anderson@example.com,+18005559012,WN567,Southwest,MDW,PHX,2025-05-12,16:30,2025-05-12,19:00,business,false,true
+Jennifer Thomas,jennifer.thomas@example.com,+18005550123,WN567,Southwest,MDW,PHX,2025-05-12,16:30,2025-05-12,19:00,leisure,false,false
+Robert Garcia,robert.garcia@example.com,+18005551111,AA456,American Airlines,MIA,JFK,2025-05-13,09:15,2025-05-13,12:30,business,true,true
+Lisa Martinez,lisa.martinez@example.com,+18005552222,AA456,American Airlines,MIA,JFK,2025-05-13,09:15,2025-05-13,12:30,business,false,true
+William Clark,william.clark@example.com,+18005553333,DL789,Delta Airlines,LAX,ATL,2025-05-13,11:00,2025-05-13,18:45,business,false,true
+Susan Rodriguez,susan.rodriguez@example.com,+18005554444,DL789,Delta Airlines,LAX,ATL,2025-05-13,11:00,2025-05-13,18:45,business,false,false
+Thomas Lewis,thomas.lewis@example.com,+18005555555,UA123,United Airlines,ORD,DEN,2025-05-14,08:00,2025-05-14,09:45,leisure,false,false
+Nancy Lee,nancy.lee@example.com,+18005556666,UA123,United Airlines,ORD,DEN,2025-05-14,08:00,2025-05-14,09:45,leisure,false,false
+Daniel Walker,daniel.walker@example.com,+18005557777,B6789,JetBlue,FLL,JFK,2025-05-14,14:30,2025-05-14,17:15,business,false,true
+Karen Hall,karen.hall@example.com,+18005558888,B6789,JetBlue,FLL,JFK,2025-05-14,14:30,2025-05-14,17:15,business,true,true
+Matthew Allen,matthew.allen@example.com,+18005559999,WN234,Southwest,DEN,LAS,2025-05-15,10:45,2025-05-15,11:55,leisure,false,false
+Betty Young,betty.young@example.com,+18005550000,WN234,Southwest,DEN,LAS,2025-05-15,10:45,2025-05-15,11:55,leisure,false,false

@@ -1,0 +1,684 @@
+// Main App Component
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch, NavLink } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import FlightStatus from './pages/FlightStatus';
+import UploadCSV from './pages/UploadCSV';
+import Reports from './pages/Reports';
+import './App.css';
+
+function App() {
+  // Get the base URL from the homepage in package.json or default to '/'
+  const basename = process.env.PUBLIC_URL || '/flight-tracker';
+  
+  return (
+    <Router basename={basename}>
+      <div className="app-container">
+        <nav className="app-nav">
+          <div className="app-title">Flight Tracker</div>
+          <ul className="nav-links">
+            <li>
+              <NavLink exact to="/" activeClassName="active">Dashboard</NavLink>
+            </li>
+            <li>
+              <NavLink to="/upload" activeClassName="active">Upload Passengers</NavLink>
+            </li>
+            <li>
+              <NavLink to="/flights" activeClassName="active">Flight Status</NavLink>
+            </li>
+            <li>
+              <NavLink to="/reports" activeClassName="active">Reports</NavLink>
+            </li>
+          </ul>
+        </nav>
+        
+        <main className="app-content">
+          <Switch>
+            <Route exact path="/" component={Dashboard} />
+            <Route path="/upload" component={UploadCSV} />
+            <Route path="/flights" component={FlightStatus} />
+            <Route path="/reports" component={Reports} />
+          </Switch>
+        </main>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
+// CSV Upload Component
+import React, { useState } from 'react';
+import api from '../services/api';
+import { Alert, Spinner, ProgressBar } from 'react-bootstrap';
+import './UploadCSV.css';
+
+function UploadCSV() {
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
+  
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+    setError(null);
+    setResult(null);
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!file) {
+      setError('Please select a CSV file to upload');
+      return;
+    }
+    
+    if (!file.name.endsWith('.csv')) {
+      setError('Only CSV files are accepted');
+      return;
+    }
+    
+    const formData = new FormData();
+    formData.append('passengersFile', file);
+    
+    setUploading(true);
+    setProgress(0);
+    
+    try {
+      const response = await api.uploadCsv(formData, {
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setProgress(percentCompleted);
+        }
+      });
+      
+      setResult(response.data);
+      setFile(null);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to upload file');
+    } finally {
+      setUploading(false);
+    }
+  };
+  
+  return (
+    <div className="upload-container">
+      <h2>Upload Passenger Data</h2>
+      <div className="upload-instructions">
+        <h4>CSV Format Requirements</h4>
+        <p>Please ensure your CSV file contains the following columns:</p>
+        <ul>
+          <li>passengerName - Full name of the passenger</li>
+          <li>email - Email address</li>
+          <li>phone - Phone number (for SMS notifications)</li>
+          <li>flightNumber - Flight identifier (e.g., AA123)</li>
+          <li>airline - Airline name</li>
+          <li>departureAirport - Airport code (e.g., JFK)</li>
+          <li>arrivalAirport - Airport code (e.g., LAX)</li>
+          <li>departureDate - Date in YYYY-MM-DD format</li>
+          <li>departureTime - Time in HH:MM format</li>
+          <li>arrivalDate - Date in YYYY-MM-DD format</li>
+          <li>arrivalTime - Time in HH:MM format</li>
+          <li>travelReason - Purpose of travel (business, leisure, etc.)</li>
+          <li>vipStatus - 'true' or 'false'</li>
+          <li>frequentFlyer - 'true' or 'false'</li>
+        </ul>
+      </div>
+      
+      <form onSubmit={handleSubmit} className="upload-form">
+        <div className="form-group">
+          <label htmlFor="file-upload" className="file-label">
+            {file ? file.name : 'Choose CSV file'}
+          </label>
+          <input
+            type="file"
+            id="file-upload"
+            onChange={handleFileChange}
+            accept=".csv"
+            className="file-input"
+          />
+        </div>
+        
+        {uploading && (
+          <div className="upload-progress">
+            <ProgressBar now={progress} label={`${progress}%`} />
+          </div>
+        )}
+        
+        <button type="submit" className="upload-button" disabled={uploading || !file}>
+          {uploading ? <Spinner animation="border" size="sm" /> : 'Upload Passengers'}
+        </button>
+      </form>
+      
+      {error && <Alert variant="danger">{error}</Alert>}
+      
+      {result && (
+        <div className="upload-result">
+          <Alert variant="success">
+            <h4>Upload Successful!</h4>
+            <p>Processed {result.passengerCount} passengers on {result.flightCount} flights.</p>
+            <p>These flights will now be monitored for status changes.</p>
+          </Alert>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default UploadCSV;
+
+// Flight Status Component
+import React, { useState, useEffect } from 'react';
+import api from '../services/api';
+import { Table, Badge, Spinner, Form, InputGroup } from 'react-bootstrap';
+import { format } from 'date-fns';
+import './FlightStatus.css';
+
+function FlightStatus() {
+  const [flights, setFlights] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filter, setFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  
+  useEffect(() => {
+    fetchFlights();
+    
+    // Poll for updates every 5 minutes
+    const interval = setInterval(() => {
+      fetchFlights();
+    }, 5 * 60 * 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  const fetchFlights = async () => {
+    try {
+      const response = await api.getFlights();
+      setFlights(response.data.flights || []);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to load flight data');
+      setLoading(false);
+    }
+  };
+  
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case 'Scheduled':
+        return <Badge bg="primary">Scheduled</Badge>;
+      case 'Delayed':
+        return <Badge bg="warning">Delayed</Badge>;
+      case 'Cancelled':
+        return <Badge bg="danger">Cancelled</Badge>;
+      case 'In Air':
+        return <Badge bg="info">In Air</Badge>;
+      case 'Landed':
+        return <Badge bg="success">Landed</Badge>;
+      default:
+        return <Badge bg="secondary">Unknown</Badge>;
+    }
+  };
+  
+  const filteredFlights = flights.filter(flight => {
+    const matchesText = 
+      flight.flightNumber.toLowerCase().includes(filter.toLowerCase()) ||
+      flight.airline.toLowerCase().includes(filter.toLowerCase()) ||
+      flight.departureAirport.toLowerCase().includes(filter.toLowerCase()) ||
+      flight.arrivalAirport.toLowerCase().includes(filter.toLowerCase());
+      
+    const matchesStatus = statusFilter === 'all' || flight.status === statusFilter;
+    
+    return matchesText && matchesStatus;
+  });
+  
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="error-container">
+        <Alert variant="danger">{error}</Alert>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="flight-status-container">
+      <h2>Flight Status</h2>
+      
+      <div className="flight-filters">
+        <InputGroup className="mb-3">
+          <InputGroup.Text id="search-addon">Search</InputGroup.Text>
+          <Form.Control
+            placeholder="Flight number, airline, airport..."
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </InputGroup>
+        
+        <Form.Select 
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="status-filter"
+        >
+          <option value="all">All Statuses</option>
+          <option value="Scheduled">Scheduled</option>
+          <option value="Delayed">Delayed</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="In Air">In Air</option>
+          <option value="Landed">Landed</option>
+        </Form.Select>
+      </div>
+      
+      <div className="flight-table-container">
+        <Table striped bordered hover responsive>
+          <thead>
+            <tr>
+              <th>Flight</th>
+              <th>Airline</th>
+              <th>Route</th>
+              <th>Departure</th>
+              <th>Arrival</th>
+              <th>Status</th>
+              <th>Passengers</th>
+              <th>Last Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredFlights.length === 0 ? (
+              <tr>
+                <td colSpan="8" className="text-center">
+                  No flights match your search criteria
+                </td>
+              </tr>
+            ) : (
+              filteredFlights.map(flight => (
+                <tr key={flight._id} className={flight.status === 'Delayed' || flight.status === 'Cancelled' ? 'table-warning' : ''}>
+                  <td>{flight.flightNumber}</td>
+                  <td>{flight.airline}</td>
+                  <td>{flight.departureAirport} → {flight.arrivalAirport}</td>
+                  <td>
+                    {format(new Date(flight.scheduledDeparture), 'MMM d, yyyy HH:mm')}
+                    {flight.delayMinutes > 0 && (
+                      <div className="delay-info">
+                        +{flight.delayMinutes}m delay
+                      </div>
+                    )}
+                  </td>
+                  <td>{format(new Date(flight.scheduledArrival), 'MMM d, yyyy HH:mm')}</td>
+                  <td>{getStatusBadge(flight.status)}</td>
+                  <td>{flight.passengers.length}</td>
+                  <td>
+                    {flight.lastChecked 
+                      ? format(new Date(flight.lastChecked), 'MMM d, HH:mm:ss')
+                      : 'Not checked yet'}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </Table>
+      </div>
+    </div>
+  );
+}
+
+export default FlightStatus;
+
+// Reports Component with Chart
+import React, { useState, useEffect } from 'react';
+import api from '../services/api';
+import { Form, Card, Row, Col } from 'react-bootstrap';
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  PieChart, Pie, Cell
+} from 'recharts';
+import './Reports.css';
+
+function Reports() {
+  const [reportData, setReportData] = useState({
+    flightsByStatus: [],
+    flightsByAirline: [],
+    passengersByCategory: [],
+    delayTrend: []
+  });
+  const [loading, setLoading] = useState(true);
+  const [timeRange, setTimeRange] = useState('1m'); // 1m, 3m
+  
+  useEffect(() => {
+    fetchReportData();
+  }, [timeRange]);
+  
+  const fetchReportData = async () => {
+    setLoading(true);
+    try {
+      const response = await api.getReports(timeRange);
+      setReportData(response.data);
+    } catch (err) {
+      console.error('Failed to load report data', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+  
+  return (
+    <div className="reports-container">
+      <div className="reports-header">
+        <h2>Flight Reports</h2>
+        <Form.Select 
+          value={timeRange} 
+          onChange={(e) => setTimeRange(e.target.value)}
+          className="time-range-select"
+        >
+          <option value="1m">Last Month</option>
+          <option value="3m">Last 3 Months</option>
+        </Form.Select>
+      </div>
+      
+      <Row>
+        <Col md={6}>
+          <Card className="report-card">
+            <Card.Header>Flight Status Distribution</Card.Header>
+            <Card.Body>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={reportData.flightsByStatus}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={true}
+                    outerRadius={100}
+                    fill="#8884d8"
+                    dataKey="value"
+                    nameKey="name"
+                    label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {reportData.flightsByStatus.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </Card.Body>
+          </Card>
+        </Col>
+        
+        <Col md={6}>
+          <Card className="report-card">
+            <Card.Header>Flights by Airline</Card.Header>
+            <Card.Body>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={reportData.flightsByAirline}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="value" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      
+      <Row className="mt-4">
+        <Col md={6}>
+          <Card className="report-card">
+            <Card.Header>Passengers by Category</Card.Header>
+            <Card.Body>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={reportData.passengersByCategory}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={true}
+                    outerRadius={100}
+                    fill="#8884d8"
+                    dataKey="value"
+                    nameKey="name"
+                    label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {reportData.passengersByCategory.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </Card.Body>
+          </Card>
+        </Col>
+        
+        <Col md={6}>
+          <Card className="report-card">
+            <Card.Header>Delay Trend (Last 30 Days)</Card.Header>
+            <Card.Body>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={reportData.delayTrend}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="delayedFlights" fill="#FFBB28" name="Delayed Flights" />
+                  <Bar dataKey="cancelledFlights" fill="#FF8042" name="Cancelled Flights" />
+                </BarChart>
+              </ResponsiveContainer>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+
+export default Reports;
+
+// Dashboard Component
+import React, { useState, useEffect } from 'react';
+import api from '../services/api';
+import { Card, Row, Col, ListGroup, Badge } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
+import './Dashboard.css';
+
+function Dashboard() {
+  const [dashboardData, setDashboardData] = useState({
+    flightStats: {
+      total: 0,
+      scheduled: 0,
+      inAir: 0,
+      delayed: 0,
+      cancelled: 0,
+      landed: 0
+    },
+    passengerStats: {
+      total: 0,
+      byCategory: []
+    },
+    recentUploads: [],
+    upcomingFlights: []
+  });
+  
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    fetchDashboardData();
+    
+    // Refresh every 5 minutes
+    const interval = setInterval(() => {
+      fetchDashboardData();
+    }, 5 * 60 * 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  const fetchDashboardData = async () => {
+    try {
+      const response = await api.getDashboard();
+      setDashboardData(response.data);
+      setLoading(false);
+    } catch (err) {
+      console.error('Failed to load dashboard data', err);
+      setLoading(false);
+    }
+  };
+  
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case 'Scheduled':
+        return <Badge bg="primary">Scheduled</Badge>;
+      case 'Delayed':
+        return <Badge bg="warning">Delayed</Badge>;
+      case 'Cancelled':
+        return <Badge bg="danger">Cancelled</Badge>;
+      case 'In Air':
+        return <Badge bg="info">In Air</Badge>;
+      case 'Landed':
+        return <Badge bg="success">Landed</Badge>;
+      default:
+        return <Badge bg="secondary">Unknown</Badge>;
+    }
+  };
+  
+  if (loading) {
+    return <div className="dashboard-loading">Loading dashboard...</div>;
+  }
+  
+  return (
+    <div className="dashboard-container">
+      <h2>Flight Tracker Dashboard</h2>
+      
+      <Row>
+        <Col md={3}>
+          <Card className="stats-card">
+            <Card.Body>
+              <Card.Title>Total Flights</Card.Title>
+              <div className="stat-value">{dashboardData.flightStats.total}</div>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={3}>
+          <Card className="stats-card warning">
+            <Card.Body>
+              <Card.Title>Delayed</Card.Title>
+              <div className="stat-value">{dashboardData.flightStats.delayed}</div>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={3}>
+          <Card className="stats-card danger">
+            <Card.Body>
+              <Card.Title>Cancelled</Card.Title>
+              <div className="stat-value">{dashboardData.flightStats.cancelled}</div>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={3}>
+          <Card className="stats-card info">
+            <Card.Body>
+              <Card.Title>Total Passengers</Card.Title>
+              <div className="stat-value">{dashboardData.passengerStats.total}</div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      
+      <Row className="mt-4">
+        <Col md={6}>
+          <Card className="dashboard-card">
+            <Card.Header>Upcoming Flights (Next 24h)</Card.Header>
+            <Card.Body>
+              <ListGroup variant="flush">
+                {dashboardData.upcomingFlights.length === 0 ? (
+                  <div className="no-data">No upcoming flights in the next 24 hours</div>
+                ) : (
+                  dashboardData.upcomingFlights.map(flight => (
+                    <ListGroup.Item key={flight._id}>
+                      <div className="flight-item">
+                        <div className="flight-main">
+                          <div className="flight-number">{flight.flightNumber}</div>
+                          <div className="flight-route">
+                            {flight.departureAirport} → {flight.arrivalAirport}
+                          </div>
+                        </div>
+                        <div className="flight-info">
+                          <div className="flight-time">
+                            {format(new Date(flight.scheduledDeparture), 'MMM d, HH:mm')}
+                          </div>
+                          <div className="flight-status">
+                            {getStatusBadge(flight.status)}
+                          </div>
+                          <div className="passenger-count">
+                            {flight.passengers.length} passengers
+                          </div>
+                        </div>
+                      </div>
+                    </ListGroup.Item>
+                  ))
+                )}
+              </ListGroup>
+            </Card.Body>
+            <Card.Footer>
+              <Link to="/flights" className="view-all">View all flights</Link>
+            </Card.Footer>
+          </Card>
+        </Col>
+        
+        <Col md={6}>
+          <Card className="dashboard-card">
+            <Card.Header>Recent Uploads</Card.Header>
+            <Card.Body>
+              <ListGroup variant="flush">
+                {dashboardData.recentUploads.length === 0 ? (
+                  <div className="no-data">No recent uploads</div>
+                ) : (
+                  dashboardData.recentUploads.map(batch => (
+                    <ListGroup.Item key={batch._id}>
+                      <div className="batch-item">
+                        <div className="batch-info">
+                          <div className="batch-name">{batch.fileName}</div>
+                          <div className="batch-date">
+                            {format(new Date(batch.uploadDate), 'MMM d, yyyy HH:mm')}
+                          </div>
+                        </div>
+                        <div className="batch-stats">
+                          <div className="batch-count">
+                            {batch.processedCount} passengers
+                          </div>
+                          <div className="batch-status">
+                            <Badge bg={batch.status === 'Completed' ? 'success' : 'danger'}>
+                              {batch.status}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </ListGroup.Item>
+                  ))
+                )}
+              </ListGroup>
+            </Card.Body>
+            <Card.Footer>
+              <Link to="/upload" className="upload-new">Upload new passengers</Link>
+            </Card.Footer>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+
+export default Dashboard;

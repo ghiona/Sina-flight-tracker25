@@ -1,0 +1,109 @@
+{
+  "flightsByStatus": [
+    {
+      "name": "Scheduled",
+      "value": 1
+    },
+    {
+      "name": "Delayed",
+      "value": 2
+    },
+    {
+      "name": "Cancelled",
+      "value": 4
+    },
+    {
+      "name": "In Air",
+      "value": 2
+    },
+    {
+      "name": "Landed",
+      "value": 2
+    }
+  ],
+  "flightsByAirline": [
+    {
+      "name": "American Airlines",
+      "value": 2
+    },
+    {
+      "name": "Delta Airlines",
+      "value": 2
+    },
+    {
+      "name": "United Airlines",
+      "value": 2
+    },
+    {
+      "name": "JetBlue",
+      "value": 2
+    },
+    {
+      "name": "Southwest",
+      "value": 2
+    },
+    {
+      "name": "British Airways",
+      "value": 1
+    }
+  ],
+  "passengersByCategory": [
+    {
+      "name": "VIP",
+      "value": 4
+    },
+    {
+      "name": "Business",
+      "value": 7
+    },
+    {
+      "name": "Leisure",
+      "value": 9
+    },
+    {
+      "name": "Frequent Flyer",
+      "value": 0
+    },
+    {
+      "name": "Regular",
+      "value": 20
+    }
+  ],
+  "delayTrend": [
+    {
+      "date": "2025-03-31",
+      "delayedFlights": 0,
+      "cancelledFlights": 0
+    },
+    {
+      "date": "2025-04-01",
+      "delayedFlights": 0,
+      "cancelledFlights": 0
+    },
+    {
+      "date": "2025-04-02",
+      "delayedFlights": 0,
+      "cancelledFlights": 0
+    },
+    {
+      "date": "2025-04-03",
+      "delayedFlights": 0,
+      "cancelledFlights": 0
+    },
+    {
+      "date": "2025-04-04",
+      "delayedFlights": 0,
+      "cancelledFlights": 0
+    },
+    {
+      "date": "2025-04-05",
+      "delayedFlights": 0,
+      "cancelledFlights": 0
+    },
+    {
+      "date": "2025-04-06",
+      "delayedFlights": 0,
+      "cancelledFlights": 0
+    }
+  ]
+}
